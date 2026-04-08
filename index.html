@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Link Group | AI for Local Businesses</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        @font-face {
+            font-family: 'Satoshi';
+            src: url('https://vgbujcuwptvheqijyjbe.supabase.co/storage/v1/object/public/hmac-uploads/uploads/4aed2f49-a476-436f-bae8-f31aa18f46fa/1767920861040-60c1c779/Satoshi-Variable.woff2') format('woff2');
+            font-weight: 300 900;
+            font-display: swap;
+            font-style: normal;
+        }
+
+        :root {
+            --font-satoshi: 'Satoshi', 'Inter', sans-serif;
+            --color-bg: #050505;
+            --color-accent: #FF6B50;
+        }
+
+        body {
+            font-family: var(--font-satoshi);
+            background-color: var(--color-bg);
+            color: #ebebeb;
+            scroll-behavior: smooth;
+            transition: opacity 0.15s ease;
+        }
+
+        .selection-coral::selection {
+            background-color: var(--color-accent);
+            color: white;
+        }
+
+        .glass-nav {
+            background: rgba(17, 17, 17, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-text {
+            font-size: 13vw;
+            line-height: 0.9;
+            letter-spacing: -0.05em;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .animate-float { animation: float 4s ease-in-out infinite; }
+
+        /* ── Scroll reveal ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.12s; }
+        .reveal-delay-2 { transition-delay: 0.24s; }
+        .reveal-delay-3 { transition-delay: 0.36s; }
+
+        /* ── Founder photo ── */
+        .founder-photo {
+            filter: grayscale(100%);
+            transition: filter 0.9s ease;
+        }
+        .founder-photo-wrap:hover .founder-photo { filter: grayscale(0%); }
+
+        .founder-grain {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 120px 120px;
+            mix-blend-mode: overlay;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* ── Credential rows ── */
+        .credential-item {
+            transition: padding-left 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .credential-item:hover { padding-left: 12px; }
+
+        .credential-bar {
+            height: 1px;
+            background: #FF6B50;
+            width: 0;
+            transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .credential-item.visible .credential-bar { width: 32px; }
+
+        /* ── Language toggle ── */
+        .lang-btn { transition: color 0.2s, opacity 0.2s; }
+        .lang-btn.active { color: #ffffff; }
+        .lang-btn:not(.active) { color: #555555; }
+        .lang-btn:not(.active):hover { color: #888888; }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen bg-[#050505] selection-coral overflow-x-hidden">
+
+        <!-- Top Navigation -->
+        <nav class="fixed top-0 left-0 right-0 z-[100] px-6 py-6 flex items-center justify-between text-sm font-medium tracking-tight">
+            <div class="flex items-center gap-10">
+                <a href="/" id="nav-logo" class="flex items-center group">
+                    <img src="logo_tlg.png" alt="TLG" class="h-8 w-auto transition-transform group-hover:rotate-12"
+                         style="filter: invert(1); mix-blend-mode: screen;">
+                </a>
+                <div class="hidden lg:flex items-center gap-8 text-[#888888]">
+                    <a href="#"        class="hover:text-white transition-colors" data-i18n="nav-home">Home</a>
+                    <a href="#founder" class="hover:text-white transition-colors" data-i18n="nav-about">About</a>
+                    <a href="#work"    class="hover:text-white transition-colors" data-i18n="nav-work">Our Work</a>
+                    <a href="#contact" class="hover:text-white transition-colors" data-i18n="nav-contact">Contact</a>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <!-- Language toggle -->
+                <div class="flex items-center gap-1.5 text-xs font-bold tracking-widest">
+                    <button id="lang-en" class="lang-btn active" onclick="setLanguage('en')">EN</button>
+                    <span class="text-[#333]">/</span>
+                    <button id="lang-de" class="lang-btn" onclick="setLanguage('de')">DE</button>
+                </div>
+                <a href="#contact" class="hidden md:block text-[#888888] hover:text-white transition-colors" data-i18n="nav-touch">Get in touch</a>
+                <a href="mailto:hello@tlg-ai.com" class="px-5 py-2.5 bg-[#1a1a1a] hover:bg-white hover:text-black border border-[#333333] rounded-lg transition-all duration-300" data-i18n="nav-cta">Get started</a>
+            </div>
+        </nav>
+
+        <!-- Floating Bottom Bar -->
+        <div class="fixed bottom-8 left-1/2 -translate-x-1/2 z-[110] hidden md:flex items-center p-2 glass-nav rounded-2xl shadow-2xl">
+            <a href="#contact" class="px-8 py-3 bg-[#FF6B50] hover:bg-[#E55A40] text-black font-bold text-sm tracking-wide uppercase rounded-xl transition-all" data-i18n="nav-contact">Contact</a>
+        </div>
+
+        <!-- Hero Section -->
+        <header class="relative h-screen w-full flex flex-col items-center justify-center">
+            <div class="absolute inset-0 z-0 pointer-events-none">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_#1a1a1a_0%,_#050505_70%)] opacity-60"></div>
+            </div>
+            <div class="relative z-10">
+                <h1 class="hero-text font-bold text-white text-center">/ TLG-AI</h1>
+            </div>
+
+            <div class="absolute bottom-12 left-8 md:left-12 flex items-center gap-5 group">
+                <img src="founder_picture.jpg" alt="Florian Link"
+                     class="w-10 h-10 rounded-full border-2 border-[#050505] object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-500">
+                <p class="text-xs md:text-sm font-medium leading-tight text-[#888888] group-hover:text-white transition-colors">
+                    Florian Link<br><span data-i18n="hero-caption">Founder, TLG</span>
+                </p>
+            </div>
+
+            <div class="absolute bottom-12 right-8 md:right-12 text-right">
+                <a href="mailto:hello@tlg-ai.com"
+                   class="text-white font-medium hover:text-[#FF6B50] transition-colors border-b-2 border-white hover:border-[#FF6B50] pb-1">
+                    hello@tlg-ai.com
+                </a>
+            </div>
+        </header>
+
+        <!-- Benefits Section -->
+        <section class="py-32 px-6 md:px-12 max-w-7xl mx-auto">
+            <div class="flex items-center gap-3 mb-10 reveal">
+                <div class="w-2 h-2 rounded-full bg-[#FF6B50] animate-pulse"></div>
+                <span class="text-[10px] font-bold tracking-[0.3em] text-[#666666] uppercase"
+                      data-i18n="benefits-eyebrow">Why build slow when AI moves fast?</span>
+            </div>
+
+            <h2 class="text-4xl md:text-7xl font-medium leading-[1.05] tracking-tight text-white max-w-5xl mb-24 reveal reveal-delay-1"
+                data-i18n-html="benefits-headline">
+                AI-built websites and outreach that gets <span class="text-[#666666]">more customers</span> through your door.
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Benefit Card 1 -->
+                <div class="bg-[#111111] rounded-[2.5rem] p-12 min-h-[520px] flex flex-col justify-between relative overflow-hidden group hover:bg-[#161616] transition-all duration-500 reveal reveal-delay-1">
+                    <div class="absolute top-10 right-10 bg-[#1a1a1a] text-[10px] font-bold px-4 py-2 rounded-full uppercase tracking-widest text-[#888888] border border-[#333333]"
+                         data-i18n="card1-badge">Fully Automated</div>
+                    <div class="mt-auto">
+                        <h3 class="text-5xl md:text-7xl font-semibold tracking-tighter mb-2 text-white"
+                            data-i18n="card1-h1">Launch faster.</h3>
+                        <h3 class="text-5xl md:text-7xl font-semibold tracking-tighter text-[#444444] group-hover:text-[#666666] transition-colors"
+                            data-i18n="card1-h2">Convert sooner.</h3>
+                    </div>
+                </div>
+
+                <!-- Benefit Card 2: CSS website mockup -->
+                <div class="bg-[#0d0d0d] border border-[#1e1e1e] rounded-[2.5rem] p-8 md:p-10 min-h-[520px] flex items-center justify-center relative overflow-hidden group reveal reveal-delay-2">
+                    <div class="w-full max-w-md rounded-xl shadow-2xl overflow-hidden transform group-hover:scale-[1.03] transition-transform duration-700 ease-out"
+                         style="border: 1px solid rgba(255,255,255,0.08);">
+                        <!-- Browser chrome -->
+                        <div class="bg-[#1c1c1e] px-4 py-3 flex items-center gap-2">
+                            <div class="w-2.5 h-2.5 rounded-full bg-[#FF5F57]"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-[#FEBC2E]"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-[#28C840]"></div>
+                            <div class="ml-4 flex-1 h-5 bg-[#2a2a2c] rounded-full flex items-center px-3">
+                                <span class="text-[9px] text-[#888] font-mono tracking-wide truncate"
+                                      data-i18n="card2-url">zahnarzt-muster.tlg-ai.com</span>
+                            </div>
+                        </div>
+                        <!-- Simulated dental site -->
+                        <div class="bg-[#050505]" style="aspect-ratio:16/10;overflow:hidden;position:relative;">
+                            <div class="flex items-center justify-between px-5 py-3 border-b border-white/5">
+                                <div class="h-3 w-20 bg-white/80 rounded-sm"></div>
+                                <div class="flex gap-3">
+                                    <div class="h-2 w-10 bg-white/20 rounded-sm"></div>
+                                    <div class="h-2 w-10 bg-white/20 rounded-sm"></div>
+                                    <div class="h-6 w-14 bg-[#FF6B50] rounded-md"></div>
+                                </div>
+                            </div>
+                            <div class="px-5 pt-5 pb-4">
+                                <div class="h-2 w-24 bg-[#FF6B50]/60 rounded-sm mb-3"></div>
+                                <div class="h-5 w-4/5 bg-white/90 rounded-sm mb-2"></div>
+                                <div class="h-5 w-3/5 bg-white/40 rounded-sm mb-4"></div>
+                                <div class="h-3 w-2/3 bg-white/20 rounded-sm mb-1"></div>
+                                <div class="h-3 w-1/2 bg-white/15 rounded-sm mb-5"></div>
+                                <div class="flex gap-3">
+                                    <div class="h-7 w-24 bg-[#FF6B50] rounded-lg"></div>
+                                    <div class="h-7 w-20 border border-white/20 rounded-lg"></div>
+                                </div>
+                            </div>
+                            <div class="px-5 flex gap-2 mt-1">
+                                <div class="flex-1 h-14 bg-[#111] rounded-xl border border-white/5 flex flex-col justify-center px-3 gap-1">
+                                    <div class="h-2 w-3/4 bg-white/50 rounded-sm"></div>
+                                    <div class="h-1.5 w-1/2 bg-white/20 rounded-sm"></div>
+                                </div>
+                                <div class="flex-1 h-14 bg-[#111] rounded-xl border border-white/5 flex flex-col justify-center px-3 gap-1">
+                                    <div class="h-2 w-3/4 bg-white/50 rounded-sm"></div>
+                                    <div class="h-1.5 w-1/2 bg-white/20 rounded-sm"></div>
+                                </div>
+                                <div class="flex-1 h-14 bg-[#111] rounded-xl border border-white/5 flex flex-col justify-center px-3 gap-1">
+                                    <div class="h-2 w-3/4 bg-white/50 rounded-sm"></div>
+                                    <div class="h-1.5 w-1/2 bg-white/20 rounded-sm"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card label -->
+                    <div class="absolute bottom-10 left-10 right-10 flex items-center justify-between">
+                        <div>
+                            <div class="text-[10px] font-bold uppercase tracking-widest text-[#888888] mb-1"
+                                 data-i18n="card2-label-top">AI Website</div>
+                            <div class="text-white font-semibold text-base"
+                                 data-i18n="card2-label-bottom">Live in minutes. On your domain.</div>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-[#FF6B50]/20 flex items-center justify-center shrink-0">
+                            <iconify-icon icon="lucide:arrow-up-right" class="text-[#FF6B50] text-sm"></iconify-icon>
+                        </div>
+                    </div>
+                    <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2.5rem]"
+                         style="background: rgba(255,107,80,0.02);"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Work Gallery -->
+        <section id="work" class="py-32 px-6 md:px-12 max-w-7xl mx-auto">
+            <div class="flex justify-between items-end mb-20 border-b border-[#222222] pb-10 reveal">
+                <h2 class="text-xs font-bold tracking-[0.4em] uppercase text-[#FF6B50]"
+                    data-i18n="work-heading">Selected Builds</h2>
+                <span class="hidden md:block text-[#444444] text-xs font-medium uppercase tracking-widest">Volume 01 &mdash; 2025</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-32">
+
+                <article class="group cursor-pointer reveal">
+                    <div class="aspect-[4/3] overflow-hidden bg-[#111111] rounded-sm">
+                        <img src="https://picsum.photos/seed/dental-practice/800/600" alt="Dental"
+                             class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700">
+                    </div>
+                    <div class="mt-8 flex justify-between items-start">
+                        <div>
+                            <h3 class="text-3xl font-bold tracking-tight mb-2 group-hover:text-[#FF6B50] transition-colors">DENTAL</h3>
+                            <p class="text-[#666666] text-[10px] font-bold uppercase tracking-[0.2em]"
+                               data-i18n="work-tag1">Web Design / Healthcare</p>
+                        </div>
+                        <div class="p-3 rounded-full border border-[#333333] group-hover:bg-[#FF6B50] group-hover:text-black group-hover:border-transparent transition-all duration-300">
+                            <iconify-icon icon="lucide:arrow-up-right" class="text-2xl"></iconify-icon>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="group cursor-pointer md:mt-24 reveal reveal-delay-1">
+                    <div class="aspect-[4/3] overflow-hidden bg-[#111111] rounded-sm">
+                        <img src="https://picsum.photos/seed/startup-office/800/600" alt="Start-Ups"
+                             class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700">
+                    </div>
+                    <div class="mt-8 flex justify-between items-start">
+                        <div>
+                            <h3 class="text-3xl font-bold tracking-tight mb-2 group-hover:text-[#FF6B50] transition-colors">STARTUPS</h3>
+                            <p class="text-[#666666] text-[10px] font-bold uppercase tracking-[0.2em]"
+                               data-i18n="work-tag2">Web Design / Start-Ups</p>
+                        </div>
+                        <div class="p-3 rounded-full border border-[#333333] group-hover:bg-[#FF6B50] group-hover:text-black group-hover:border-transparent transition-all duration-300">
+                            <iconify-icon icon="lucide:arrow-up-right" class="text-2xl"></iconify-icon>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="group cursor-pointer reveal reveal-delay-1">
+                    <div class="aspect-[4/3] overflow-hidden bg-[#111111] rounded-sm">
+                        <img src="https://picsum.photos/seed/business-sme/800/600" alt="SME"
+                             class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700">
+                    </div>
+                    <div class="mt-8 flex justify-between items-start">
+                        <div>
+                            <h3 class="text-3xl font-bold tracking-tight mb-2 group-hover:text-[#FF6B50] transition-colors">MITTELSTAND</h3>
+                            <p class="text-[#666666] text-[10px] font-bold uppercase tracking-[0.2em]"
+                               data-i18n="work-tag3">Web Design / SME</p>
+                        </div>
+                        <div class="p-3 rounded-full border border-[#333333] group-hover:bg-[#FF6B50] group-hover:text-black group-hover:border-transparent transition-all duration-300">
+                            <iconify-icon icon="lucide:arrow-up-right" class="text-2xl"></iconify-icon>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="group cursor-pointer md:mt-24 reveal reveal-delay-2">
+                    <div class="aspect-[4/3] overflow-hidden bg-[#111111] rounded-sm">
+                        <img src="https://picsum.photos/seed/ecommerce-shop/800/600" alt="E-Commerce"
+                             class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700">
+                    </div>
+                    <div class="mt-8 flex justify-between items-start">
+                        <div>
+                            <h3 class="text-3xl font-bold tracking-tight mb-2 group-hover:text-[#FF6B50] transition-colors">E-COMMERCE</h3>
+                            <p class="text-[#666666] text-[10px] font-bold uppercase tracking-[0.2em]"
+                               data-i18n="work-tag4">Web Design / E-Commerce</p>
+                        </div>
+                        <div class="p-3 rounded-full border border-[#333333] group-hover:bg-[#FF6B50] group-hover:text-black group-hover:border-transparent transition-all duration-300">
+                            <iconify-icon icon="lucide:arrow-up-right" class="text-2xl"></iconify-icon>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- Founder Section -->
+        <section id="founder" class="py-32 px-6 md:px-12 border-t border-[#1a1a1a]">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex items-center gap-3 mb-20 reveal">
+                    <div class="w-2 h-2 rounded-full bg-[#FF6B50]"></div>
+                    <span class="text-[10px] font-bold tracking-[0.3em] text-[#666666] uppercase"
+                          data-i18n="founder-eyebrow">The Founder</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-16 md:gap-24 items-start">
+
+                    <!-- Photo -->
+                    <div class="md:col-span-2 reveal">
+                        <div class="founder-photo-wrap relative overflow-hidden rounded-sm">
+                            <img src="founder_picture.jpg" alt="Florian Link"
+                                 class="w-full object-cover founder-photo"
+                                 style="max-height:580px;object-position:center top;">
+                            <div class="founder-grain absolute inset-0"></div>
+                        </div>
+                        <p class="mt-5 text-[10px] font-bold uppercase tracking-[0.3em] text-[#444444]"
+                           data-i18n="founder-caption">Florian Link &mdash; Founder, TLG</p>
+                    </div>
+
+                    <!-- Credentials -->
+                    <div class="md:col-span-3 flex flex-col justify-center pt-0 md:pt-8">
+                        <h2 class="text-6xl md:text-8xl font-black tracking-tighter text-white mb-1 reveal">FLORIAN</h2>
+                        <h2 class="text-6xl md:text-8xl font-black tracking-tighter text-[#2a2a2a] mb-12 reveal reveal-delay-1">LINK.</h2>
+                        <p class="text-[#666666] text-base mb-16 max-w-md leading-relaxed reveal reveal-delay-2"
+                           data-i18n="founder-tagline">
+                            Building AI systems that turn cold outreach into warm revenue — fully automated, at scale.
+                        </p>
+
+                        <div class="flex flex-col">
+
+                            <div class="credential-item border-t border-[#1a1a1a] py-8 flex gap-8 items-start reveal reveal-delay-1">
+                                <div class="flex flex-col items-start gap-3 shrink-0">
+                                    <span class="text-[10px] font-bold tracking-[0.3em] text-[#FF6B50]">01</span>
+                                    <div class="credential-bar"></div>
+                                </div>
+                                <div>
+                                    <h4 class="text-[10px] font-bold uppercase tracking-[0.25em] text-[#555555] mb-3"
+                                        data-i18n="cred1-label">Education</h4>
+                                    <p class="text-white font-semibold text-lg leading-snug">MSc Finance &mdash; HEC Paris</p>
+                                    <p class="text-[#666666] font-medium text-lg leading-snug">BSc Management &mdash; London School of Economics</p>
+                                </div>
+                            </div>
+
+                            <div class="credential-item border-t border-[#1a1a1a] py-8 flex gap-8 items-start reveal reveal-delay-2">
+                                <div class="flex flex-col items-start gap-3 shrink-0">
+                                    <span class="text-[10px] font-bold tracking-[0.3em] text-[#FF6B50]">02</span>
+                                    <div class="credential-bar"></div>
+                                </div>
+                                <div>
+                                    <h4 class="text-[10px] font-bold uppercase tracking-[0.25em] text-[#555555] mb-3"
+                                        data-i18n="cred2-label">Previous Venture</h4>
+                                    <p class="text-white font-semibold text-lg leading-snug" data-i18n="cred2-title">AI Consulting &mdash; Acquihired</p>
+                                    <p class="text-[#666666] font-medium text-base mt-1" data-i18n="cred2-sub">Built and sold an AI consulting practice</p>
+                                </div>
+                            </div>
+
+                            <div class="credential-item border-t border-b border-[#1a1a1a] py-8 flex gap-8 items-start reveal reveal-delay-3">
+                                <div class="flex flex-col items-start gap-3 shrink-0">
+                                    <span class="text-[10px] font-bold tracking-[0.3em] text-[#FF6B50]">03</span>
+                                    <div class="credential-bar"></div>
+                                </div>
+                                <div>
+                                    <h4 class="text-[10px] font-bold uppercase tracking-[0.25em] text-[#555555] mb-3"
+                                        data-i18n="cred3-label">Industry Experience</h4>
+                                    <p class="text-white font-semibold text-lg leading-snug" data-i18n="cred3-title">Led AI Integration</p>
+                                    <p class="text-[#666666] font-medium text-base mt-1" data-i18n="cred3-sub">Software Group &mdash; B2B software consolidation, Germany</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer id="contact" class="relative pt-48 pb-32 px-6 md:px-12 border-t border-[#1a1a1a]">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-end gap-16">
+                <div class="flex-1 reveal">
+                    <h2 class="text-[14vw] md:text-[10vw] leading-[0.85] font-black tracking-tighter text-white mb-12 select-none">
+                        LET'S<br />TALK.
+                    </h2>
+                    <div class="flex flex-col gap-6">
+                        <a href="mailto:hello@tlg-ai.com"
+                           class="text-3xl md:text-4xl font-semibold hover:text-[#FF6B50] transition-all w-fit">
+                            hello@tlg-ai.com
+                        </a>
+                        <p class="text-[#666666] flex items-center gap-2">
+                            <iconify-icon icon="lucide:map-pin"></iconify-icon>
+                            <span data-i18n="footer-location">Serving businesses across Europe.</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="flex gap-4 md:mb-6 reveal reveal-delay-1">
+                    <a href="#" class="w-14 h-14 border border-[#333333] rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-all hover:-translate-y-2">
+                        <iconify-icon icon="lucide:instagram" class="text-xl"></iconify-icon>
+                    </a>
+                    <a href="#" class="w-14 h-14 border border-[#333333] rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-all hover:-translate-y-2">
+                        <iconify-icon icon="lucide:twitter" class="text-xl"></iconify-icon>
+                    </a>
+                    <a href="#" class="w-14 h-14 border border-[#333333] rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-all hover:-translate-y-2">
+                        <iconify-icon icon="lucide:linkedin" class="text-xl"></iconify-icon>
+                    </a>
+                    <a href="#" class="w-14 h-14 border border-[#333333] rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-all hover:-translate-y-2">
+                        <iconify-icon icon="lucide:globe" class="text-xl"></iconify-icon>
+                    </a>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto mt-40 pt-10 border-t border-[#111111] flex flex-col md:flex-row justify-between text-[#333333] text-[10px] font-bold uppercase tracking-widest">
+                <p data-i18n="footer-copy">&copy; 2025 The Link Group. All rights reserved.</p>
+                <div class="flex gap-10 mt-6 md:mt-0">
+                    <a href="#" class="hover:text-[#666666] transition-colors" data-i18n="footer-privacy">Privacy Policy</a>
+                    <a href="#" class="hover:text-[#666666] transition-colors" data-i18n="footer-terms">Terms of Service</a>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        // ── Translations ──────────────────────────────────────────────────────
+        const translations = {
+            en: {
+                'nav-home':           'Home',
+                'nav-about':          'About',
+                'nav-work':           'Our Work',
+                'nav-contact':        'Contact',
+                'nav-touch':          'Get in touch',
+                'nav-cta':            'Get started',
+                'hero-caption':       'Founder, TLG',
+                'benefits-eyebrow':   'Why build slow when AI moves fast?',
+                'benefits-headline':  'AI-optimised websites and outreach that gets <span class="text-[#666666]">more customers</span> through your door.',
+                'card1-badge':        'Fully Automated',
+                'card1-h1':           'Launch faster.',
+                'card1-h2':           'Convert sooner.',
+                'card2-url':          'zahnarzt-muster.tlg-ai.com',
+                'card2-label-top':    'AI Website',
+                'card2-label-bottom': 'Live in minutes. On your domain.',
+                'work-heading':       'Selected Builds',
+                'work-tag1':          'Web Design / Healthcare',
+                'work-tag2':          'Web Design / Start-Ups',
+                'work-tag3':          'Web Design / SME',
+                'work-tag4':          'Web Design / E-Commerce',
+                'founder-eyebrow':    'The Founder',
+                'founder-tagline':    'Building AI systems that turn cold outreach into warm revenue — fully automated, at scale.',
+                'founder-caption':    'Florian Link \u2014 Founder, TLG',
+                'cred1-label':        'Education',
+                'cred2-label':        'Previous Venture',
+                'cred2-title':        'AI Consulting \u2014 Acquihired',
+                'cred2-sub':          'Built and sold an AI consulting practice',
+                'cred3-label':        'Industry Experience',
+                'cred3-title':        'Led AI Integration',
+                'cred3-sub':          'Software Group \u2014 B2B software consolidation, Germany',
+                'footer-location':    'Serving businesses across Europe.',
+                'footer-privacy':     'Privacy Policy',
+                'footer-terms':       'Terms of Service',
+                'footer-copy':        '\u00a9 2025 The Link Group. All rights reserved.',
+            },
+            de: {
+                'nav-home':           'Startseite',
+                'nav-about':          '\u00dcber uns',
+                'nav-work':           'Projekte',
+                'nav-contact':        'Kontakt',
+                'nav-touch':          'Kontakt aufnehmen',
+                'nav-cta':            'Jetzt starten',
+                'hero-caption':       'Gr\u00fcnder, TLG',
+                'benefits-eyebrow':   'Warum langsam bauen, wenn KI schneller ist?',
+                'benefits-headline':  'KI-optimisierte Websites und Outreach, die <span class="text-[#666666]">mehr Kunden</span> zu Ihnen bringen.',
+                'card1-badge':        'Vollautomatisch',
+                'card1-h1':           'Schneller live.',
+                'card1-h2':           'Fr\u00fcher konvertieren.',
+                'card2-url':          'zahnarzt-muster.tlg-ai.com',
+                'card2-label-top':    'KI-Website',
+                'card2-label-bottom': 'In Minuten live. Auf Ihrer Domain.',
+                'work-heading':       'Ausgew\u00e4hlte Projekte',
+                'work-tag1':          'Webdesign / Gesundheit',
+                'work-tag2':          'Webdesign / Start-ups',
+                'work-tag3':          'Webdesign / Mittelstand',
+                'work-tag4':          'Webdesign / E-Commerce',
+                'founder-eyebrow':    'Der Gr\u00fcnder',
+                'founder-tagline':    'KI-Systeme, die aus Kaltakquise echten Umsatz machen \u2013 vollautomatisch und skalierbar.',
+                'founder-caption':    'Florian Link \u2014 Gr\u00fcnder, TLG',
+                'cred1-label':        'Ausbildung',
+                'cred2-label':        'Vorheriges Unternehmen',
+                'cred2-title':        'KI-Beratung \u2014 Acquihired',
+                'cred2-sub':          'KI-Beratungsunternehmen aufgebaut und verkauft',
+                'cred3-label':        'Berufserfahrung',
+                'cred3-title':        'KI-Integration geleitet',
+                'cred3-sub':          'Software Group \u2014 B2B-Software-Konsolidierung, Deutschland',
+                'footer-location':    'F\u00fcr Unternehmen in ganz Europa.',
+                'footer-privacy':     'Datenschutz',
+                'footer-terms':       'AGB',
+                'footer-copy':        '\u00a9 2025 The Link Group. Alle Rechte vorbehalten.',
+            }
+        };
+
+        // ── Apply language ────────────────────────────────────────────────────
+        function applyLanguage(lang) {
+            const t = translations[lang] || translations.en;
+            document.documentElement.lang = lang;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const v = t[el.dataset.i18n];
+                if (v !== undefined) el.textContent = v;
+            });
+            document.querySelectorAll('[data-i18n-html]').forEach(el => {
+                const v = t[el.dataset.i18nHtml];
+                if (v !== undefined) el.innerHTML = v;
+            });
+            document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+            document.getElementById('lang-de').classList.toggle('active', lang === 'de');
+        }
+
+        function setLanguage(lang) {
+            localStorage.setItem('tlg-lang', lang);
+            document.body.style.opacity = '0.6';
+            setTimeout(() => {
+                applyLanguage(lang);
+                document.body.style.opacity = '1';
+            }, 150);
+        }
+
+        // ── Auto-detect ───────────────────────────────────────────────────────
+        async function detectAndApply() {
+            const stored = localStorage.getItem('tlg-lang');
+            if (stored) { applyLanguage(stored); return; }
+
+            try {
+                const ctrl = new AbortController();
+                const timer = setTimeout(() => ctrl.abort(), 3000);
+                const res  = await fetch('https://ipapi.co/json/', { signal: ctrl.signal });
+                clearTimeout(timer);
+                const data = await res.json();
+                if (['DE', 'AT', 'CH'].includes(data.country_code)) {
+                    applyLanguage('de'); return;
+                }
+            } catch (_) {}
+
+            // Fallback: browser language
+            const lang = (navigator.language || 'en').toLowerCase().startsWith('de') ? 'de' : 'en';
+            applyLanguage(lang);
+        }
+
+        detectAndApply();
+
+        // ── Scroll reveal ─────────────────────────────────────────────────────
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.08 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
