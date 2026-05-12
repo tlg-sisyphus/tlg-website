@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Inaaya Birthday Video</title>
+    <link rel="icon" type="image/png" href="../new_logo_tlg.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --bg: #050505;
+            --glass: rgba(255, 255, 255, 0.12);
+            --glass-strong: rgba(255, 255, 255, 0.2);
+            --line: rgba(255, 255, 255, 0.18);
+            --text: #f8f8f8;
+            --muted: rgba(255, 255, 255, 0.66);
+            --accent: #ff6b50;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            min-height: 100%;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: var(--bg);
+            color: var(--text);
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        .page {
+            position: relative;
+            display: grid;
+            min-height: 100vh;
+            place-items: center;
+            isolation: isolate;
+            overflow: hidden;
+            padding: 28px;
+        }
+
+        .page::before {
+            content: "";
+            position: absolute;
+            inset: -20%;
+            z-index: -3;
+            background:
+                radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.16), transparent 15%),
+                radial-gradient(circle at 20% 78%, rgba(255, 107, 80, 0.26), transparent 28%),
+                radial-gradient(circle at 82% 72%, rgba(255, 198, 151, 0.13), transparent 24%),
+                linear-gradient(145deg, #090909 0%, #101010 42%, #020202 100%);
+            filter: blur(14px);
+            transform: scale(1.04);
+        }
+
+        .page::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -2;
+            background:
+                linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.54)),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E");
+            opacity: 0.74;
+        }
+
+        .lockscreen {
+            width: min(100%, 430px);
+            min-height: min(780px, calc(100vh - 56px));
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: clamp(24px, 6vh, 52px) 18px 22px;
+            text-align: center;
+            transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
+        }
+
+        .lockscreen.hidden {
+            opacity: 0;
+            transform: translateY(-16px) scale(0.98);
+            visibility: hidden;
+            pointer-events: none;
+            position: absolute;
+        }
+
+        .lock-top {
+            display: grid;
+            gap: 10px;
+            justify-items: center;
+        }
+
+        .lock-icon {
+            width: 22px;
+            height: 22px;
+            margin-bottom: 4px;
+            opacity: 0.82;
+        }
+
+        .time {
+            font-size: clamp(64px, 18vw, 92px);
+            font-weight: 800;
+            letter-spacing: -0.055em;
+            line-height: 0.88;
+        }
+
+        .date {
+            color: rgba(255, 255, 255, 0.82);
+            font-size: 17px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .prompt {
+            display: grid;
+            gap: 22px;
+            justify-items: center;
+            width: 100%;
+            padding-top: 36px;
+        }
+
+        .prompt h1 {
+            margin: 0;
+            font-size: 19px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .dots {
+            display: flex;
+            gap: 18px;
+            height: 18px;
+            align-items: center;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border: 1.5px solid rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            transition: background 0.16s ease, transform 0.16s ease, border-color 0.16s ease;
+        }
+
+        .dot.filled {
+            background: #fff;
+            border-color: #fff;
+            transform: scale(1.08);
+        }
+
+        .message {
+            min-height: 20px;
+            margin: 0;
+            color: rgba(255, 255, 255, 0.72);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .message.error {
+            color: #ffb1a2;
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 76px);
+            gap: 14px 18px;
+            justify-content: center;
+            padding-top: 10px;
+        }
+
+        .key {
+            width: 76px;
+            height: 76px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 50%;
+            background: var(--glass);
+            color: #fff;
+            cursor: pointer;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+        }
+
+        .key strong {
+            display: block;
+            font-size: 31px;
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: -0.04em;
+        }
+
+        .key span {
+            display: block;
+            min-height: 11px;
+            margin-top: 4px;
+            color: rgba(255, 255, 255, 0.66);
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+        }
+
+        .key:hover,
+        .key:focus-visible {
+            outline: none;
+            background: var(--glass-strong);
+            border-color: rgba(255, 255, 255, 0.28);
+        }
+
+        .key:active {
+            transform: scale(0.94);
+        }
+
+        .key.blank {
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .delete {
+            border: 0;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.78);
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .delete:hover,
+        .delete:focus-visible {
+            color: #fff;
+            outline: none;
+        }
+
+        .shake {
+            animation: shake 0.34s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-12px); }
+            40% { transform: translateX(10px); }
+            60% { transform: translateX(-7px); }
+            80% { transform: translateX(5px); }
+        }
+
+        .video-view {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            padding: 28px;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(1.015);
+            transition: opacity 0.5s ease, transform 0.5s ease, visibility 0.5s ease;
+        }
+
+        .video-view.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        .video-shell {
+            width: min(80vw, 1500px);
+            height: min(80vh, 900px);
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr);
+            gap: 16px;
+        }
+
+        .video-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            color: rgba(255, 255, 255, 0.82);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: contain;
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            background: #000;
+            box-shadow: 0 34px 110px rgba(0, 0, 0, 0.58);
+        }
+
+        @media (max-width: 640px) {
+            .page {
+                padding: 18px;
+            }
+
+            .lockscreen {
+                min-height: calc(100vh - 36px);
+            }
+
+            .keypad {
+                grid-template-columns: repeat(3, 68px);
+                gap: 12px 16px;
+            }
+
+            .key {
+                width: 68px;
+                height: 68px;
+            }
+
+            .key strong {
+                font-size: 28px;
+            }
+
+            .video-view {
+                padding: 14px;
+            }
+
+            .video-shell {
+                width: 100%;
+                height: 80vh;
+            }
+
+            video {
+                border-radius: 16px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <section class="lockscreen" id="lockscreen" aria-label="Passcode lock screen">
+            <div class="lock-top">
+                <svg class="lock-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill="currentColor" d="M7 10V8a5 5 0 0 1 10 0v2h1.2A1.8 1.8 0 0 1 20 11.8v7.4a1.8 1.8 0 0 1-1.8 1.8H5.8A1.8 1.8 0 0 1 4 19.2v-7.4A1.8 1.8 0 0 1 5.8 10H7Zm2 0h6V8a3 3 0 0 0-6 0v2Z"/>
+                </svg>
+                <div class="time" id="time">10:10</div>
+                <div class="date" id="date">Inaaya's birthday</div>
+            </div>
+
+            <div class="prompt" id="prompt">
+                <h1>Enter Passcode</h1>
+                <div class="dots" aria-label="4 digit passcode">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+                <p class="message" id="message">Private video</p>
+            </div>
+
+            <div class="keypad" aria-label="Numeric keypad">
+                <button class="key" type="button" data-key="1"><strong>1</strong><span></span></button>
+                <button class="key" type="button" data-key="2"><strong>2</strong><span>ABC</span></button>
+                <button class="key" type="button" data-key="3"><strong>3</strong><span>DEF</span></button>
+                <button class="key" type="button" data-key="4"><strong>4</strong><span>GHI</span></button>
+                <button class="key" type="button" data-key="5"><strong>5</strong><span>JKL</span></button>
+                <button class="key" type="button" data-key="6"><strong>6</strong><span>MNO</span></button>
+                <button class="key" type="button" data-key="7"><strong>7</strong><span>PQRS</span></button>
+                <button class="key" type="button" data-key="8"><strong>8</strong><span>TUV</span></button>
+                <button class="key" type="button" data-key="9"><strong>9</strong><span>WXYZ</span></button>
+                <span class="key blank" aria-hidden="true"></span>
+                <button class="key" type="button" data-key="0"><strong>0</strong><span></span></button>
+                <button class="delete" type="button" id="delete">Delete</button>
+            </div>
+        </section>
+
+        <section class="video-view" id="videoView" aria-label="Birthday video" aria-hidden="true">
+            <div class="video-shell">
+                <div class="video-title">
+                    <span>Inaaya's Birthday</span>
+                </div>
+                <video id="birthdayVideo" controls playsinline preload="metadata">
+                    <source src="../inaaya_bday.mov">
+                    Your browser does not support this video format.
+                </video>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const PASSCODE = "2910";
+        const entered = [];
+        const dots = Array.from(document.querySelectorAll(".dot"));
+        const message = document.getElementById("message");
+        const prompt = document.getElementById("prompt");
+        const lockscreen = document.getElementById("lockscreen");
+        const videoView = document.getElementById("videoView");
+        const video = document.getElementById("birthdayVideo");
+        const time = document.getElementById("time");
+        const date = document.getElementById("date");
+
+        function updateClock() {
+            const now = new Date();
+            time.textContent = now.toLocaleTimeString([], {
+                hour: "numeric",
+                minute: "2-digit"
+            });
+            date.textContent = now.toLocaleDateString([], {
+                weekday: "long",
+                month: "long",
+                day: "numeric"
+            });
+        }
+
+        function updateDots() {
+            dots.forEach((dot, index) => {
+                dot.classList.toggle("filled", index < entered.length);
+            });
+        }
+
+        function resetEntry(text = "Private video", isError = false) {
+            entered.length = 0;
+            updateDots();
+            message.textContent = text;
+            message.classList.toggle("error", isError);
+        }
+
+        function showError() {
+            resetEntry("Incorrect passcode", true);
+            prompt.classList.remove("shake");
+            void prompt.offsetWidth;
+            prompt.classList.add("shake");
+        }
+
+        function unlock() {
+            message.textContent = "Unlocked";
+            message.classList.remove("error");
+            lockscreen.classList.add("hidden");
+            videoView.classList.add("visible");
+            videoView.setAttribute("aria-hidden", "false");
+            video.focus();
+        }
+
+        function enterDigit(digit) {
+            if (entered.length >= PASSCODE.length) {
+                return;
+            }
+
+            entered.push(digit);
+            updateDots();
+
+            if (entered.length === PASSCODE.length) {
+                window.setTimeout(() => {
+                    entered.join("") === PASSCODE ? unlock() : showError();
+                }, 130);
+            }
+        }
+
+        document.querySelectorAll("[data-key]").forEach((button) => {
+            button.addEventListener("click", () => enterDigit(button.dataset.key));
+        });
+
+        document.getElementById("delete").addEventListener("click", () => {
+            entered.pop();
+            updateDots();
+            message.textContent = "Private video";
+            message.classList.remove("error");
+        });
+
+        window.addEventListener("keydown", (event) => {
+            if (videoView.classList.contains("visible")) {
+                return;
+            }
+
+            if (/^[0-9]$/.test(event.key)) {
+                enterDigit(event.key);
+            }
+
+            if (event.key === "Backspace" || event.key === "Delete") {
+                entered.pop();
+                updateDots();
+            }
+        });
+
+        updateClock();
+        window.setInterval(updateClock, 30000);
+    </script>
+</body>
+</html>
